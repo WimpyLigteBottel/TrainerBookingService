@@ -24,3 +24,22 @@ These considerations are listed to give you a better idea of what is required. P
 
 - Maven 3
 - Java 8+
+
+
+
+# FAQ
+
+## Why do I have extra Trainers_details table?
+Ideally i don't like this and might need to add more thought about it. The main idea is if the
+system gets high load on the trainer table because it will get queried often then the more specific information can 
+be on seperate table. I would assume it won't be issue but it is something I thought about.
+
+There is definitly a few fields missing like email,id number ect... I am keeping things simple and
+it could be things that I add in the future.
+
+
+
+## Why is there no client contact details?
+I realised i might maybe want some of the clients details when they book a session with the trainer but
+i decided to skip that, it is definitly something that should be added.
+
