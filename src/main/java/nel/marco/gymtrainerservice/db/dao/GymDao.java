@@ -26,10 +26,10 @@ public class GymDao {
     public List<Gym> findAll(int maxResults, int index, String filterName) {
 
 
-        String hql = "select g from Gym g where g.name like '%:filterName%'";
+        String hql = "select g from Gym g where g.name like :filterName";
 
         return entityManager.createQuery(hql, Gym.class)
-                .setParameter("filterName", filterName)// Using the setParameter because of sql injection
+                .setParameter("filterName", "%" + filterName + "%")// Using the setParameter because of sql injection
                 .setMaxResults(maxResults)
                 .setFirstResult(index)
                 .getResultList();

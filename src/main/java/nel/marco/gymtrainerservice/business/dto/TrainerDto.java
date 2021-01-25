@@ -1,8 +1,9 @@
 package nel.marco.gymtrainerservice.business.dto;
 
-public class GymDto {
+public class TrainerDto {
 
     private long id;
+    private GymDto gymDto;
     private String name;
 
     public long getId() {
@@ -13,13 +14,20 @@ public class GymDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public GymDto getGymDto() {
+        return gymDto;
+    }
+
+    public void setGymDto(GymDto gymDto) {
+        this.gymDto = gymDto;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getName() {
 
+        return name;
+    }
 }

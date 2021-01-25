@@ -5,4 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GymCrudRepository extends CrudRepository<Gym, Long> {}
+public interface GymCrudRepository extends CrudRepository<Gym, Long> {
+}

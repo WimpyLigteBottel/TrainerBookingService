@@ -6,6 +6,7 @@ import nel.marco.gymtrainerservice.db.dao.GymDao;
 import nel.marco.gymtrainerservice.db.entity.Gym;
 import nel.marco.gymtrainerservice.mapper.GymMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class GymManager {
 
     public List<GymDto> findAll(int maxResults, int index, String filterName) {
 
-        return gymDao.findAll(maxResults, index,filterName)
+        return gymDao.findAll(maxResults, index, filterName)
                 .stream()
                 .map(GymMapper.INSTANCE::mapToV1)
                 .collect(Collectors.toList());
@@ -38,13 +39,14 @@ public class GymManager {
         return optionalGym.map(GymMapper.INSTANCE::mapToV1);
     }
 
-    public Gym create(GymDto gymDto) {
+
+    @Transactional
+    public void create(GymDto gymDto) {
 
         Gym gym = new Gym();
         gym.setName(gymDto.getName());
 
-
-        return gymCrudRepository.save(gym);
+        gymCrudRepository.save(gym);
     }
 
 

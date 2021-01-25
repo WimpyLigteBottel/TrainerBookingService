@@ -1,9 +1,10 @@
-package nel.marco.gymtrainerservice.business.dto;
+package nel.marco.gymtrainerservice.rest.v1.model;
 
-public class GymDto {
+public class GymModel {
 
     private long id;
     private String name;
+
 
     public long getId() {
         return id;
@@ -20,6 +21,5 @@ public class GymDto {
     public void setName(String name) {
         this.name = name;
     }
-
 
 }

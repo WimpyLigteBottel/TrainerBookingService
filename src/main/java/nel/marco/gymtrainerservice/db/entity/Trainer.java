@@ -9,19 +9,21 @@ import java.util.Date;
 @Entity
 public class Trainer {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-  @Column(unique = false)
-  private long gymId;
+    @ManyToOne
+    private Gym gym;
 
-  @Column(unique = true, length = 100)
-  private String name;
+    @Column(unique = true, length = 100)
+    private String name;
 
-  @CreationTimestamp private Date inserted;
+    @CreationTimestamp
+    private Date inserted;
 
-  @UpdateTimestamp private Date updated;
+    @UpdateTimestamp
+    private Date updated;
 
     public long getId() {
         return id;
@@ -31,12 +33,12 @@ public class Trainer {
         this.id = id;
     }
 
-    public long getGymId() {
-        return gymId;
+    public Gym getGym() {
+        return gym;
     }
 
-    public void setGymId(long gymId) {
-        this.gymId = gymId;
+    public void setGym(Gym gym) {
+        this.gym = gym;
     }
 
     public String getName() {
