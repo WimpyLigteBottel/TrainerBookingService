@@ -2,6 +2,8 @@ package nel.marco.gymtrainerservice.mapper;
 
 import nel.marco.gymtrainerservice.business.dto.TrainerDto;
 import nel.marco.gymtrainerservice.db.entity.Trainer;
+import nel.marco.gymtrainerservice.db.entity.TrainerDetail;
+import nel.marco.gymtrainerservice.rest.v1.model.TrainerDetailModel;
 import nel.marco.gymtrainerservice.rest.v1.model.TrainerModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -24,11 +26,23 @@ public interface TrainerMapper {
 
     @Mappings({
             @Mapping(target = "gymDto.id", source = "gymId"),
+
+            //Below is used for trainerDetail class
+            @Mapping(target = "detailId", ignore = true),
+            @Mapping(target = "contactNumber", ignore = true),
+            @Mapping(target = "email", ignore = true),
+            @Mapping(target = "description", ignore = true),
+
     })
     TrainerDto mapToV1(TrainerModel trainerDto);
 
     @Mappings({
-            @Mapping(target = "gymDto", ignore = true),
+            @Mapping(target = "gymDto", source = "gym"),
+            //Below is used for trainerDetail class
+            @Mapping(target = "detailId", ignore = true),
+            @Mapping(target = "contactNumber", ignore = true),
+            @Mapping(target = "email", ignore = true),
+            @Mapping(target = "description", ignore = true),
     })
     TrainerDto mapToV1(Trainer trainer);
 
@@ -37,5 +51,17 @@ public interface TrainerMapper {
 
     @Mappings({})
     List<TrainerModel> mapToV1(List<TrainerDto> all);
+
+    @Mappings({
+            @Mapping(target = "gymDto", ignore = true),
+    })
+    TrainerDto mapToV1(TrainerDetailModel detailTrainerModel);
+
+
+    @Mappings({
+            @Mapping(target = "detailId", source = "id"),
+            @Mapping(target = "name", source = "trainer.name"),
+    })
+    TrainerDetailModel mapToV1(TrainerDetail trainerDetail);
 
 }

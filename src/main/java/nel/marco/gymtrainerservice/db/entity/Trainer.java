@@ -20,9 +20,11 @@ public class Trainer {
     private String name;
 
     @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date inserted;
 
     @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
 
     public long getId() {

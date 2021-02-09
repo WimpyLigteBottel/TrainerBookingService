@@ -13,20 +13,34 @@ public class TrainerDetail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(unique = false, length = 100)
-    private String name;
+    @OneToOne
+    private Trainer trainer;
 
-    @Column(unique = false, length = 100)
+    @Column(unique = false, length = 100, nullable = true)
     private String description;
 
-    @Column(unique = false, length = 20)
+    @Column(unique = false, length = 20, nullable = true)
     private String contactNumber;
 
+
+    @Column(unique = false, length = 20, nullable = false)
+    private String email;
+
     @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date inserted;
 
     @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public long getId() {
         return id;
@@ -34,14 +48,6 @@ public class TrainerDetail {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
@@ -58,6 +64,14 @@ public class TrainerDetail {
 
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
+    }
+
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
     }
 
     public Date getInserted() {

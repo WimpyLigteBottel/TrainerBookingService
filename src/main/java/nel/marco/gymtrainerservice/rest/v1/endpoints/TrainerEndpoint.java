@@ -1,12 +1,8 @@
-package nel.marco.gymtrainerservice.rest.v1;
+package nel.marco.gymtrainerservice.rest.v1.endpoints;
 
-import nel.marco.gymtrainerservice.business.dto.GymDto;
 import nel.marco.gymtrainerservice.business.dto.TrainerDto;
-import nel.marco.gymtrainerservice.business.manager.GymManager;
 import nel.marco.gymtrainerservice.business.manager.TrainerManager;
-import nel.marco.gymtrainerservice.mapper.GymMapper;
 import nel.marco.gymtrainerservice.mapper.TrainerMapper;
-import nel.marco.gymtrainerservice.rest.v1.model.GymModel;
 import nel.marco.gymtrainerservice.rest.v1.model.TrainerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,45 +16,10 @@ import java.util.Optional;
 Do note i am ignore security on my endpoint, ideally i would allow only certain users to access this endpoint/service
  */
 @RestController
-public class GymTrainerEndpoint {
-
-    @Autowired
-    private GymManager gymManager;
+public class TrainerEndpoint {
 
     @Autowired
     private TrainerManager trainerManager;
-
-
-    @GetMapping("/gym")
-    public ResponseEntity<List<GymModel>> findAllGyms(@RequestParam(required = false, defaultValue = "10") int maxResults, @RequestParam(required = false, defaultValue = "0") int index, @RequestParam(required = false, defaultValue = "") String filterGymName) {
-        List<GymDto> all = gymManager.findAll(maxResults, index, filterGymName);
-
-
-        return ResponseEntity.ok(GymMapper.INSTANCE.mapToV1(all));
-    }
-
-    @PostMapping("/gym")
-    public ResponseEntity<?> createNewGym(@RequestBody GymModel gym) {
-
-        GymDto mapToV1 = GymMapper.INSTANCE.mapToV1(gym);
-
-        gymManager.create(mapToV1);
-
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @GetMapping("/gym/{id}")
-    public ResponseEntity<GymModel> findGym(@PathVariable long id) {
-
-        Optional<GymDto> gymDto = gymManager.find(id);
-
-        if (gymDto.isPresent()) {
-            return ResponseEntity.ok(GymMapper.INSTANCE.mapToV1(gymDto.get()));
-        }
-
-        return ResponseEntity.notFound().build();
-    }
 
 
     @GetMapping("/trainer")
@@ -82,7 +43,7 @@ public class GymTrainerEndpoint {
         }
 
         // This is very bad way of responding ideally i need to give more accurate error message if possible
-        // ideally in the 400 range to indiciate  it is client error
+        // ideally in the 400 range to indicate  it is client error
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 

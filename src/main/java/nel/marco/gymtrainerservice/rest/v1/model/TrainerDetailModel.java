@@ -1,14 +1,14 @@
-package nel.marco.gymtrainerservice.business.dto;
+package nel.marco.gymtrainerservice.rest.v1.model;
 
-public class TrainerDto {
+public class TrainerDetailModel {
+
 
     private long id;
     private long detailId;
-    private GymDto gymDto;
     private String name;
+    private String description;
     private String contactNumber;
     private String email;
-    private String description;
 
     public long getId() {
         return id;
@@ -26,20 +26,20 @@ public class TrainerDto {
         this.detailId = detailId;
     }
 
-    public GymDto getGymDto() {
-        return gymDto;
-    }
-
-    public void setGymDto(GymDto gymDto) {
-        this.gymDto = gymDto;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getContactNumber() {
@@ -56,13 +56,5 @@ public class TrainerDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

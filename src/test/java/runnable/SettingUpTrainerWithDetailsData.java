@@ -1,7 +1,7 @@
 package runnable;
 
 import com.google.gson.Gson;
-import nel.marco.gymtrainerservice.rest.v1.model.GymModel;
+import nel.marco.gymtrainerservice.rest.v1.model.TrainerDetailModel;
 import nel.marco.gymtrainerservice.rest.v1.model.TrainerModel;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -9,58 +9,46 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.UUID;
 
 /* This is very crud way of setting up data
 I know you can create scripts that can be ran at start up
  to insert data but i chose this approach just for each of testing
 
 */
-public class SettingUpTrainerData {
+public class SettingUpTrainerWithDetailsData {
+
+    RestTemplate restTemplate = new RestTemplate();
 
     public static void main(String[] args) {
-        new SettingUpTrainerData();
+        new SettingUpTrainerWithDetailsData();
     }
 
-    public SettingUpTrainerData() {
+    public SettingUpTrainerWithDetailsData() {
 
         for (int i = 0; i < 10; i++) {
-            createTrainers();
+            createDetailTrainers();
         }
 
-        findAll().forEach(gym -> findSpecificTrainer(gym.getId()));
+        //findAll().forEach(gym -> findSpecificTrainer(gym.getId()));
     }
 
-    public static TrainerModel createTrainers() {
-        RestTemplate restTemplate = new RestTemplate();
+    private void createDetailTrainers() {
+        TrainerModel trainer = SettingUpTrainerData.createTrainers();
+
+        TrainerDetailModel trainerDetailModel = new TrainerDetailModel();
+        trainerDetailModel.setContactNumber("0123456789");
+        trainerDetailModel.setDescription("randomDescription");
+        trainerDetailModel.setEmail("email@email.com");
 
 
-        GymModel gymModel = new GymModel();
-        gymModel.setName(UUID.randomUUID().toString());
+        ResponseEntity<Object> forEntity = restTemplate.postForEntity("http://localhost:8080/trainer/" + trainer.getId() + "/details", trainerDetailModel, Object.class);
 
-        restTemplate.postForEntity("http://localhost:8080/gym", gymModel, Object.class);
-
-        ResponseEntity<List<GymModel>> gyms =
-                restTemplate.exchange(
-                        String.format("http://localhost:8080/gym?filterGymName=%s", gymModel.getName()),
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<List<GymModel>>() {
-                        });
-
-
-        TrainerModel request = new TrainerModel();
-        request.setName(UUID.randomUUID().toString());
-        //Very bad to do it like this but i am assuming it created successfully
-        request.setGymId(gyms.getBody().get(0).getId());
-
-        ResponseEntity<Object> forEntity = restTemplate.postForEntity("http://localhost:8080/trainer", request, Object.class);
 
         if (forEntity.getStatusCode().is2xxSuccessful()) {
             System.out.println("ADDED");
         }
 
-        return request;
+
     }
 
 

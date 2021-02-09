@@ -6,7 +6,6 @@ public class TrainerModel {
     private long gymId;
     private String name;
 
-
     public String getName() {
         return name;
     }

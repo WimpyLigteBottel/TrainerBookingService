@@ -35,9 +35,11 @@ public class GymClass {
     private boolean isBooked;
 
     @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date inserted;
 
     @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
 
     public long getId() {
