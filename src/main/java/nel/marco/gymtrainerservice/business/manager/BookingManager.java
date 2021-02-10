@@ -9,8 +9,6 @@ import nel.marco.gymtrainerservice.db.entity.GymClass;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-
 @Component
 public class BookingManager {
 
@@ -23,6 +21,9 @@ public class BookingManager {
 
     @Transactional
     public void bookAClass(GymClassDto gymClassDto) {
+
+
+        gymClassDao.isTrainerAvailable(gymClassDto.getTrainerId(), gymClassDto.getTimeSlotStart(), gymClassDto.getTimeSlotEnd());
 
         //TODO: do a check to see if the session can be booked
 

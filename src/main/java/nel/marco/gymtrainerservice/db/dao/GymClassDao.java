@@ -1,12 +1,15 @@
 package nel.marco.gymtrainerservice.db.dao;
 
 import nel.marco.gymtrainerservice.db.entity.GymClass;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class GymClassDao {
 
     @PersistenceContext
@@ -44,5 +47,27 @@ public class GymClassDao {
 
     public void save(GymClass gymClass) {
         entityManager.persist(gymClass);
+    }
+
+    public boolean isTrainerAvailable(long trainerId, Date timeSlotStart, Date timeSlotEnd) {
+
+        String hql = "SELECT g FROM GymClass g " +
+                "WHERE g.trainerId=:id " +
+                "AND (g.timeSlotStart is between :start and :end OR g.timeSlotEnd is between :start and :end)";
+
+
+        try {
+            List<GymClass> singleResult = entityManager.createQuery(hql, GymClass.class)
+                    .setParameter("id", trainerId)
+                    .setParameter("start", timeSlotStart)
+                    .setParameter("end", timeSlotEnd)
+                    .getResultList();
+
+            return singleResult.size() == 0;
+        } catch (Exception e) {
+            return false;
+        }
+
+
     }
 }
