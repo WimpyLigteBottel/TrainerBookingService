@@ -20,10 +20,13 @@ public class BookingManager {
 
 
     @Transactional
-    public void bookAClass(GymClassDto gymClassDto) {
+    public void bookAClass(GymClassDto dto) {
 
 
-        gymClassDao.isTrainerAvailable(gymClassDto.getTrainerId(), gymClassDto.getTimeSlotStart(), gymClassDto.getTimeSlotEnd());
+        if (!gymClassDao.isTrainerAvailable(dto.getTrainerId(), dto.getTimeSlotStart(), dto.getTimeSlotEnd())) {
+            //TODO: add response to say that it failed to book... Maybe implement error logic in here somewhere
+        }
+        ;
 
         //TODO: do a check to see if the session can be booked
 
@@ -34,11 +37,11 @@ public class BookingManager {
         GymClass gymClass = new GymClass();
 
         gymClass.setBooked(false);
-        gymClass.setTimeSlotStart(gymClassDto.getTimeSlotStart());
-        gymClass.setTimeSlotEnd(gymClassDto.getTimeSlotEnd());
+        gymClass.setTimeSlotStart(dto.getTimeSlotStart());
+        gymClass.setTimeSlotEnd(dto.getTimeSlotEnd());
 
-        gymClass.setTrainerId(gymClassDto.getTrainerId());
-        gymClass.setGymId(gymClassDto.getGymId());
+        gymClass.setTrainerId(dto.getTrainerId());
+        gymClass.setGymId(dto.getGymId());
 
 
         gymClassDao.save(gymClass);
