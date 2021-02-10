@@ -49,11 +49,20 @@ public class GymClassDao {
         entityManager.persist(gymClass);
     }
 
+    /*
+    The logic is if i can find a record of a trainer between  A and B where end time or start time overlap
+    that means that it is already booked and if isBooked=true then the trainer has accepted
+
+    manager should contain logic to determine if multiplebookings is allowed then this will change slightly depending
+    on how it should be handled
+
+     */
     public boolean isTrainerAvailable(long trainerId, Date timeSlotStart, Date timeSlotEnd) {
 
         String hql = "SELECT g FROM GymClass g " +
                 "WHERE g.trainerId=:id " +
-                "AND (g.timeSlotStart IS BETWEEN ':start' AND ':end' OR g.timeSlotEnd IS BETWEEN ':start' AND ':end')";
+                "AND (g.timeSlotStart IS BETWEEN ':start' AND ':end' OR g.timeSlotEnd IS BETWEEN ':start' AND ':end') " +
+                "AND g.isBooked=true";
 
 
         try {
