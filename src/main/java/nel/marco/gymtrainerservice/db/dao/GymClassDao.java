@@ -53,7 +53,7 @@ public class GymClassDao {
 
         String hql = "SELECT g FROM GymClass g " +
                 "WHERE g.trainerId=:id " +
-                "AND (g.timeSlotStart is between :start and :end OR g.timeSlotEnd is between :start and :end)";
+                "AND (g.timeSlotStart IS BETWEEN ':start' AND ':end' OR g.timeSlotEnd IS BETWEEN ':start' AND ':end')";
 
 
         try {
