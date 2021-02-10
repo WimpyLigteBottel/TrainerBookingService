@@ -1,4 +1,4 @@
-package nel.marco.gymtrainerservice.rest.v1.endpoints;
+package nel.marco.gymtrainerservice.rest.v1.endpoint;
 
 import nel.marco.gymtrainerservice.business.dto.GymDto;
 import nel.marco.gymtrainerservice.business.manager.GymManager;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class GymEndpoint {
+public class Gyms {
 
 
     @Autowired

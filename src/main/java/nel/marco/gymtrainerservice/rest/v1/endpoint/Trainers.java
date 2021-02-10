@@ -1,4 +1,4 @@
-package nel.marco.gymtrainerservice.rest.v1.endpoints;
+package nel.marco.gymtrainerservice.rest.v1.endpoint;
 
 import nel.marco.gymtrainerservice.business.dto.TrainerDto;
 import nel.marco.gymtrainerservice.business.manager.TrainerManager;
@@ -16,7 +16,7 @@ import java.util.Optional;
 Do note i am ignore security on my endpoint, ideally i would allow only certain users to access this endpoint/service
  */
 @RestController
-public class TrainerEndpoint {
+public class Trainers {
 
     @Autowired
     private TrainerManager trainerManager;

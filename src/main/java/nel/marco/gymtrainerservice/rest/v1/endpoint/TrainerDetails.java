@@ -1,4 +1,4 @@
-package nel.marco.gymtrainerservice.rest.v1.endpoints;
+package nel.marco.gymtrainerservice.rest.v1.endpoint;
 
 import nel.marco.gymtrainerservice.business.dto.TrainerDto;
 import nel.marco.gymtrainerservice.business.manager.TrainerDetailManager;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 
-public class TrainerDetailEndpoint {
+public class TrainerDetails {
 
 
     @Autowired
@@ -23,7 +23,7 @@ public class TrainerDetailEndpoint {
     @GetMapping("/trainer/{id}/details")
     public ResponseEntity<TrainerDetailModel> findTrainer(@PathVariable long id) {
 
-        Optional<TrainerDetail> trainerDto = trainerDetailManager.find(id);
+        Optional<nel.marco.gymtrainerservice.db.entity.TrainerDetail> trainerDto = trainerDetailManager.find(id);
 
         if (trainerDto.isPresent()) {
             return ResponseEntity.ok(TrainerMapper.INSTANCE.mapToV1(trainerDto.get()));
