@@ -28,7 +28,7 @@ public class SettingUpTrainerData {
             createTrainers();
         }
 
-        findAll().forEach(gym -> findSpecificTrainer(gym.getId()));
+//        findAll().forEach(gym -> findSpecificTrainer(gym.getId()));
     }
 
     public static TrainerModel createTrainers() {

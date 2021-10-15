@@ -39,6 +39,24 @@ public class GymClassDao {
     }
   }
 
+  public Optional<GymClass> find(long id, long trainerId) {
+
+    String hql = "SELECT g FROM GymClass g WHERE g.id=:id AND g.trainerId=:trainerId";
+
+    try {
+      GymClass singleResult =
+          entityManager
+              .createQuery(hql, GymClass.class)
+              .setParameter("id", id)
+              .setParameter("trainerId", trainerId)
+              .getSingleResult();
+
+      return Optional.of(singleResult);
+    } catch (Exception e) {
+      return Optional.empty();
+    }
+  }
+
   public void save(GymClass gymClass) {
     entityManager.persist(gymClass);
   }

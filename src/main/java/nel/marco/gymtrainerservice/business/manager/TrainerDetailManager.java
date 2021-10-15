@@ -31,9 +31,9 @@ public class TrainerDetailManager {
   }
 
   @Transactional // in case it fails to insert into database it can rollback
-  public boolean create(TrainerDto trainerDto) {
+  public boolean create(long trainerId, TrainerDto trainerDto) {
 
-    Optional<Trainer> trainer = trainerDao.find(trainerDto.getId());
+    Optional<Trainer> trainer = trainerDao.find(trainerId);
 
     if (!trainer.isPresent()) {
       // should log or say why it could not have been created
@@ -41,6 +41,7 @@ public class TrainerDetailManager {
     }
 
     TrainerDetail trainerDetail = TrainerDetailMapper.INSTANCE.mapToV1(trainerDto);
+    trainerDetail.setTrainer(trainer.get());
 
     trainerDetailDao.save(trainerDetail);
 

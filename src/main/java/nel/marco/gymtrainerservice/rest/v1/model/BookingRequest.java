@@ -6,18 +6,18 @@ import java.util.Date;
 
 public class BookingRequest {
 
-  private long id;
+  private long trainerId;
   private long gymId;
   private String name;
   private Date startTime;
   private TimeSlotRange timeSlotRange;
 
-  public long getId() {
-    return id;
+  public long getTrainerId() {
+    return trainerId;
   }
 
-  public void setId(long id) {
-    this.id = id;
+  public void setTrainerId(long trainerId) {
+    this.trainerId = trainerId;
   }
 
   public long getGymId() {

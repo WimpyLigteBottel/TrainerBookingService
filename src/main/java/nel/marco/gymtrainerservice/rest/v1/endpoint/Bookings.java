@@ -1,23 +1,32 @@
 package nel.marco.gymtrainerservice.rest.v1.endpoint;
 
+import nel.marco.gymtrainerservice.business.manager.BookingManager;
 import nel.marco.gymtrainerservice.rest.v1.model.BookingRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Bookings {
 
+  private final BookingManager bookingManager;
+
+  public Bookings(BookingManager bookingManager) {
+    this.bookingManager = bookingManager;
+  }
+
   @PostMapping("/book")
-  public void bookAClass(@RequestBody BookingRequest bookingRequest) {
+  public ResponseEntity<?> bookAClass(@RequestBody BookingRequest bookingRequest) {
 
-    // TODO: implement validator
+    boolean isBooked = bookingManager.bookAClass(bookingRequest);
 
-    // TODO: add code to book the class
+    return ResponseEntity.accepted().build();
   }
 
   @GetMapping("/book/{id}/accept")
-  public void acceptBooking(@RequestParam long gymClassId, @RequestParam long longId) {
+  public ResponseEntity<?> acceptBooking(
+      @RequestParam long gymClassId, @RequestParam long trainerId) {
 
-    //
-
+    bookingManager.acceptBooking(gymClassId, trainerId);
+    return ResponseEntity.accepted().build();
   }
 }

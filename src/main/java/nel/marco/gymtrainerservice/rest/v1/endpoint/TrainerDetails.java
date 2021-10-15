@@ -34,7 +34,7 @@ public class TrainerDetails {
       @PathVariable long id, @RequestBody TrainerDetailModel detailTrainerModel) {
     TrainerDto trainerDto = TrainerMapper.INSTANCE.mapToV1(detailTrainerModel);
 
-    boolean isCreated = trainerDetailManager.create(trainerDto);
+    boolean isCreated = trainerDetailManager.create(id, trainerDto);
 
     if (isCreated) {
       return ResponseEntity.status(HttpStatus.CREATED).build();

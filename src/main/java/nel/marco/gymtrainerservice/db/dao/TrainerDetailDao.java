@@ -15,7 +15,7 @@ public class TrainerDetailDao {
 
   public Optional<TrainerDetail> find(long id) {
 
-    String hql = "SELECT t FROM TrainerDetail t WHERE t.id=:id";
+    String hql = "SELECT t FROM TrainerDetail t WHERE t.trainer.id=:id";
 
     try {
       TrainerDetail singleResult =

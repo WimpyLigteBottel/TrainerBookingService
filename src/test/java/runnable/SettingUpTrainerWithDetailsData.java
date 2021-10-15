@@ -24,16 +24,11 @@ public class SettingUpTrainerWithDetailsData {
     }
 
     public SettingUpTrainerWithDetailsData() {
+        findAll().forEach(this::createDetailTrainers);
 
-        for (int i = 0; i < 10; i++) {
-            createDetailTrainers();
-        }
-
-        //findAll().forEach(gym -> findSpecificTrainer(gym.getId()));
     }
 
-    private void createDetailTrainers() {
-        TrainerModel trainer = SettingUpTrainerData.createTrainers();
+    private void createDetailTrainers(TrainerModel trainerModel) {
 
         TrainerDetailModel trainerDetailModel = new TrainerDetailModel();
         trainerDetailModel.setContactNumber("0123456789");
@@ -41,7 +36,7 @@ public class SettingUpTrainerWithDetailsData {
         trainerDetailModel.setEmail("email@email.com");
 
 
-        ResponseEntity<Object> forEntity = restTemplate.postForEntity("http://localhost:8080/trainer/" + trainer.getId() + "/details", trainerDetailModel, Object.class);
+        ResponseEntity<Object> forEntity = restTemplate.postForEntity("http://localhost:8080/trainer/" + trainerModel.getId() + "/details", trainerDetailModel, Object.class);
 
 
         if (forEntity.getStatusCode().is2xxSuccessful()) {
@@ -49,19 +44,6 @@ public class SettingUpTrainerWithDetailsData {
         }
 
 
-    }
-
-
-    private void findSpecificTrainer(long id) {
-        RestTemplate restTemplate = new RestTemplate();
-
-
-        ResponseEntity<Object> forEntity =
-                restTemplate.getForEntity(String.format("http://localhost:8080/trainer/%d", id), Object.class);
-
-        if (forEntity.getStatusCode().is2xxSuccessful()) {
-            System.out.println(new Gson().toJson(forEntity.getBody()));
-        }
     }
 
     private List<TrainerModel> findAll() {
