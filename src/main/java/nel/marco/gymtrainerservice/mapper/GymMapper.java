@@ -14,21 +14,20 @@ import java.util.List;
 @Mapper(unmappedSourcePolicy = ReportingPolicy.WARN, unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface GymMapper {
 
-    GymMapper INSTANCE = Mappers.getMapper(GymMapper.class);
+  GymMapper INSTANCE = Mappers.getMapper(GymMapper.class);
 
-    // I will like to specify each mapping to be very explicit but policy reporting should catch if
-    // something is not mapped properly
-    @Mappings({})
-    GymModel mapToV1(GymDto gymDto);
+  // I will like to specify each mapping to be very explicit but policy reporting should catch if
+  // something is not mapped properly
+  @Mappings({})
+  GymModel mapToV1(GymDto gymDto);
 
-    @InheritConfiguration
-    GymDto mapToV1(GymModel gymDto);
+  @InheritConfiguration
+  GymDto mapToV1(GymModel gymDto);
 
-    // MapStruct can pickup how to map list if you specify single mapping above
-    @Mappings({})
-    List<GymModel> mapToV1(List<GymDto> gyms);
+  // MapStruct can pickup how to map list if you specify single mapping above
+  @Mappings({})
+  List<GymModel> mapToV1(List<GymDto> gyms);
 
-    @Mappings({
-    })
-    GymDto mapToV1(Gym gym);
+  @Mappings({})
+  GymDto mapToV1(Gym gym);
 }

@@ -15,39 +15,34 @@ import java.util.stream.Collectors;
 @Component
 public class GymManager {
 
-    private final GymCrudRepository gymCrudRepository;
-    private final GymDao gymDao;
+  private final GymCrudRepository gymCrudRepository;
+  private final GymDao gymDao;
 
-    public GymManager(GymCrudRepository gymCrudRepository, GymDao gymDao) {
-        this.gymCrudRepository = gymCrudRepository;
-        this.gymDao = gymDao;
-    }
+  public GymManager(GymCrudRepository gymCrudRepository, GymDao gymDao) {
+    this.gymCrudRepository = gymCrudRepository;
+    this.gymDao = gymDao;
+  }
 
+  public List<GymDto> findAll(int maxResults, int index, String filterName) {
 
-    public List<GymDto> findAll(int maxResults, int index, String filterName) {
+    return gymDao.findAll(maxResults, index, filterName).stream()
+        .map(GymMapper.INSTANCE::mapToV1)
+        .collect(Collectors.toList());
+  }
 
-        return gymDao.findAll(maxResults, index, filterName)
-                .stream()
-                .map(GymMapper.INSTANCE::mapToV1)
-                .collect(Collectors.toList());
-    }
+  public Optional<GymDto> find(long id) {
 
-    public Optional<GymDto> find(long id) {
+    Optional<Gym> optionalGym = gymDao.find(id);
 
-        Optional<Gym> optionalGym = gymDao.find(id);
+    return optionalGym.map(GymMapper.INSTANCE::mapToV1);
+  }
 
-        return optionalGym.map(GymMapper.INSTANCE::mapToV1);
-    }
+  @Transactional
+  public void create(GymDto gymDto) {
 
+    Gym gym = new Gym();
+    gym.setName(gymDto.getName());
 
-    @Transactional
-    public void create(GymDto gymDto) {
-
-        Gym gym = new Gym();
-        gym.setName(gymDto.getName());
-
-        gymCrudRepository.save(gym);
-    }
-
-
+    gymCrudRepository.save(gym);
+  }
 }

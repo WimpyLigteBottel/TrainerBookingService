@@ -12,42 +12,39 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class BookingManager {
 
+  GymDao gymDao;
+  TrainerDao trainerDao;
+  TrainerDetailDao trainerDetailDao;
+  GymClassDao gymClassDao;
 
-    GymDao gymDao;
-    TrainerDao trainerDao;
-    TrainerDetailDao trainerDetailDao;
-    GymClassDao gymClassDao;
+  @Transactional
+  public void bookAClass(GymClassDto dto) {
 
-
-    @Transactional
-    public void bookAClass(GymClassDto dto) {
-
-
-        if (!gymClassDao.isTrainerAvailable(dto.getTrainerId(), dto.getTimeSlotStart(), dto.getTimeSlotEnd())) {
-            //TODO: add response to say that it failed to book... Maybe implement error logic in here somewhere
-        }
-        ;
-
-        //TODO: do a check to see if the session can be booked
-
-        //TODO: trainer can't be in another gymclass at the same time
-
-        //TODO: do a check if the trainer is available
-
-        GymClass gymClass = new GymClass();
-
-        gymClass.setBooked(false);
-        gymClass.setTimeSlotStart(dto.getTimeSlotStart());
-        gymClass.setTimeSlotEnd(dto.getTimeSlotEnd());
-
-        gymClass.setTrainerId(dto.getTrainerId());
-        gymClass.setGymId(dto.getGymId());
-
-
-        gymClassDao.save(gymClass);
-
-
+    boolean isTrainerAvailable =
+        gymClassDao.isTrainerAvailable(
+            dto.getTrainerId(), dto.getTimeSlotStart(), dto.getTimeSlotEnd());
+    if (!isTrainerAvailable) {
+      // TODO: add response to say that it failed to book... Maybe implement error logic in here
+      // somewhere
+      System.out.println("ERROR!");
     }
+    ;
 
+    // TODO: do a check to see if the session can be booked
 
+    // TODO: trainer can't be in another gymclass at the same time
+
+    // TODO: do a check if the trainer is available
+
+    GymClass gymClass = new GymClass();
+
+    gymClass.setBooked(false);
+    gymClass.setTimeSlotStart(dto.getTimeSlotStart());
+    gymClass.setTimeSlotEnd(dto.getTimeSlotEnd());
+
+    gymClass.setTrainerId(dto.getTrainerId());
+    gymClass.setGymId(dto.getGymId());
+
+    gymClassDao.save(gymClass);
+  }
 }

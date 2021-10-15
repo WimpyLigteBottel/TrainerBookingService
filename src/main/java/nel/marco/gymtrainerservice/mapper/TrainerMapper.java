@@ -13,55 +13,52 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(unmappedSourcePolicy = ReportingPolicy.WARN, unmappedTargetPolicy = ReportingPolicy.ERROR, uses = GymMapper.class)
+@Mapper(
+    unmappedSourcePolicy = ReportingPolicy.WARN,
+    unmappedTargetPolicy = ReportingPolicy.ERROR,
+    uses = GymMapper.class)
 public interface TrainerMapper {
 
-    TrainerMapper INSTANCE = Mappers.getMapper(TrainerMapper.class);
+  TrainerMapper INSTANCE = Mappers.getMapper(TrainerMapper.class);
 
+  @Mappings({@Mapping(target = "gymId", source = "gymDto.id")})
+  TrainerModel mapToV1(TrainerDto trainerDto);
 
-    @Mappings({
-            @Mapping(target = "gymId", source = "gymDto.id")
-    })
-    TrainerModel mapToV1(TrainerDto trainerDto);
+  @Mappings({
+    @Mapping(target = "gymDto.id", source = "gymId"),
 
-    @Mappings({
-            @Mapping(target = "gymDto.id", source = "gymId"),
+    // Below is used for trainerDetail class
+    @Mapping(target = "detailId", ignore = true),
+    @Mapping(target = "contactNumber", ignore = true),
+    @Mapping(target = "email", ignore = true),
+    @Mapping(target = "description", ignore = true),
+  })
+  TrainerDto mapToV1(TrainerModel trainerDto);
 
-            //Below is used for trainerDetail class
-            @Mapping(target = "detailId", ignore = true),
-            @Mapping(target = "contactNumber", ignore = true),
-            @Mapping(target = "email", ignore = true),
-            @Mapping(target = "description", ignore = true),
+  @Mappings({
+    @Mapping(target = "gymDto", source = "gym"),
+    // Below is used for trainerDetail class
+    @Mapping(target = "detailId", ignore = true),
+    @Mapping(target = "contactNumber", ignore = true),
+    @Mapping(target = "email", ignore = true),
+    @Mapping(target = "description", ignore = true),
+  })
+  TrainerDto mapToV1(Trainer trainer);
 
-    })
-    TrainerDto mapToV1(TrainerModel trainerDto);
+  @Mappings({})
+  List<TrainerDto> mapToListV1(List<TrainerDto> trainerDtos);
 
-    @Mappings({
-            @Mapping(target = "gymDto", source = "gym"),
-            //Below is used for trainerDetail class
-            @Mapping(target = "detailId", ignore = true),
-            @Mapping(target = "contactNumber", ignore = true),
-            @Mapping(target = "email", ignore = true),
-            @Mapping(target = "description", ignore = true),
-    })
-    TrainerDto mapToV1(Trainer trainer);
+  @Mappings({})
+  List<TrainerModel> mapToV1(List<TrainerDto> all);
 
-    @Mappings({})
-    List<TrainerDto> mapToListV1(List<TrainerDto> trainerDtos);
+  @Mappings({
+    @Mapping(target = "gymDto", ignore = true),
+  })
+  TrainerDto mapToV1(TrainerDetailModel detailTrainerModel);
 
-    @Mappings({})
-    List<TrainerModel> mapToV1(List<TrainerDto> all);
-
-    @Mappings({
-            @Mapping(target = "gymDto", ignore = true),
-    })
-    TrainerDto mapToV1(TrainerDetailModel detailTrainerModel);
-
-
-    @Mappings({
-            @Mapping(target = "detailId", source = "id"),
-            @Mapping(target = "name", source = "trainer.name"),
-    })
-    TrainerDetailModel mapToV1(TrainerDetail trainerDetail);
-
+  @Mappings({
+    @Mapping(target = "detailId", source = "id"),
+    @Mapping(target = "name", source = "trainer.name"),
+  })
+  TrainerDetailModel mapToV1(TrainerDetail trainerDetail);
 }

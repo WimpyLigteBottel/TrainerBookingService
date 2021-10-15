@@ -9,50 +9,50 @@ import java.util.Date;
 @Entity
 public class Gym {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
 
-    @Column(unique = true, length = 100)
-    private String name;
+  @Column(unique = true, length = 100)
+  private String name;
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date inserted;
+  @CreationTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date inserted;
 
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updated;
+  @UpdateTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date updated;
 
-    public long getId() {
-        return id;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public Date getInserted() {
-        return inserted;
-    }
+  public Date getInserted() {
+    return inserted;
+  }
 
-    public void setInserted(Date inserted) {
-        this.inserted = inserted;
-    }
+  public void setInserted(Date inserted) {
+    this.inserted = inserted;
+  }
 
-    public Date getUpdated() {
-        return updated;
-    }
+  public Date getUpdated() {
+    return updated;
+  }
 
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
+  public void setUpdated(Date updated) {
+    this.updated = updated;
+  }
 }

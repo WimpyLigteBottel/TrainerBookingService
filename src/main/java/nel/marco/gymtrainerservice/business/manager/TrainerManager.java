@@ -16,45 +16,44 @@ import java.util.stream.Collectors;
 @Component
 public class TrainerManager {
 
-    private final TrainerDao trainerDao;
-    private final GymDao gymDao;
+  private final TrainerDao trainerDao;
+  private final GymDao gymDao;
 
-    public TrainerManager(TrainerDao trainerDao, GymDao gymDao) {
-        this.trainerDao = trainerDao;
-        this.gymDao = gymDao;
+  public TrainerManager(TrainerDao trainerDao, GymDao gymDao) {
+    this.trainerDao = trainerDao;
+    this.gymDao = gymDao;
+  }
+
+  public List<TrainerDto> findAll(int maxResults, int index, String filterName) {
+
+    return trainerDao.findAll(maxResults, index, filterName).stream()
+        .map(TrainerMapper.INSTANCE::mapToV1)
+        .collect(Collectors.toList());
+  }
+
+  public Optional<TrainerDto> find(long id) {
+
+    Optional<Trainer> optionalTrainer = trainerDao.find(id);
+
+    return optionalTrainer.map(TrainerMapper.INSTANCE::mapToV1);
+  }
+
+  @Transactional // incase it fails to insert into database it can rollback
+  public boolean create(TrainerDto trainerDto) {
+
+    Optional<Gym> gym = gymDao.find(trainerDto.getGymDto().getId());
+
+    if (!gym.isPresent()) {
+      // I prefer to return enum with what the state is... but it all depends
+      return false;
     }
 
-    public List<TrainerDto> findAll(int maxResults, int index, String filterName) {
+    Trainer trainer = new Trainer();
+    trainer.setName(trainerDto.getName());
+    trainer.setGym(gym.get());
 
-        return trainerDao.findAll(maxResults, index, filterName)
-                .stream()
-                .map(TrainerMapper.INSTANCE::mapToV1)
-                .collect(Collectors.toList());
-    }
+    trainerDao.save(trainer);
 
-    public Optional<TrainerDto> find(long id) {
-
-        Optional<Trainer> optionalTrainer = trainerDao.find(id);
-
-        return optionalTrainer.map(TrainerMapper.INSTANCE::mapToV1);
-    }
-
-    @Transactional // incase it fails to insert into database it can rollback
-    public boolean create(TrainerDto trainerDto) {
-
-        Optional<Gym> gym = gymDao.find(trainerDto.getGymDto().getId());
-
-        if (!gym.isPresent()) {
-            // I prefer to return enum with what the state is... but it all depends
-            return false;
-        }
-
-        Trainer trainer = new Trainer();
-        trainer.setName(trainerDto.getName());
-        trainer.setGym(gym.get());
-
-        trainerDao.save(trainer);
-
-        return true;
-    }
+    return true;
+  }
 }

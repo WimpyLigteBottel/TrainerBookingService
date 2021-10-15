@@ -18,46 +18,42 @@ Do note i am ignore security on my endpoint, ideally i would allow only certain 
 @RestController
 public class Trainers {
 
-    @Autowired
-    private TrainerManager trainerManager;
+  @Autowired private TrainerManager trainerManager;
 
+  @GetMapping("/trainer")
+  public ResponseEntity<List<TrainerModel>> findAllTrainers(
+      @RequestParam(required = false, defaultValue = "10") int maxResults,
+      @RequestParam(required = false, defaultValue = "0") int index,
+      @RequestParam(required = false, defaultValue = "") String filterTrainerName) {
+    List<TrainerDto> all = trainerManager.findAll(maxResults, index, filterTrainerName);
 
-    @GetMapping("/trainer")
-    public ResponseEntity<List<TrainerModel>> findAllTrainers(
-            @RequestParam(required = false, defaultValue = "10") int maxResults,
-            @RequestParam(required = false, defaultValue = "0") int index,
-            @RequestParam(required = false, defaultValue = "") String filterTrainerName) {
-        List<TrainerDto> all = trainerManager.findAll(maxResults, index, filterTrainerName);
+    return ResponseEntity.ok(TrainerMapper.INSTANCE.mapToV1(all));
+  }
 
+  @PostMapping("/trainer")
+  public ResponseEntity<?> createTrainer(@RequestBody TrainerModel trainer) {
 
-        return ResponseEntity.ok(TrainerMapper.INSTANCE.mapToV1(all));
+    TrainerDto trainerDto = TrainerMapper.INSTANCE.mapToV1(trainer);
+
+    if (trainerManager.create(trainerDto)) {
+      return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/trainer")
-    public ResponseEntity<?> createTrainer(@RequestBody TrainerModel trainer) {
+    // This is very bad way of responding ideally i need to give more accurate error message if
+    // possible
+    // ideally in the 400 range to indicate  it is client error
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+  }
 
-        TrainerDto trainerDto = TrainerMapper.INSTANCE.mapToV1(trainer);
+  @GetMapping("/trainer/{id}")
+  public ResponseEntity<TrainerModel> findTrainer(@PathVariable long id) {
 
-        if (trainerManager.create(trainerDto)) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        }
+    Optional<TrainerDto> trainerDto = trainerManager.find(id);
 
-        // This is very bad way of responding ideally i need to give more accurate error message if possible
-        // ideally in the 400 range to indicate  it is client error
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    if (trainerDto.isPresent()) {
+      return ResponseEntity.ok(TrainerMapper.INSTANCE.mapToV1(trainerDto.get()));
     }
 
-    @GetMapping("/trainer/{id}")
-    public ResponseEntity<TrainerModel> findTrainer(@PathVariable long id) {
-
-        Optional<TrainerDto> trainerDto = trainerManager.find(id);
-
-        if (trainerDto.isPresent()) {
-            return ResponseEntity.ok(TrainerMapper.INSTANCE.mapToV1(trainerDto.get()));
-        }
-
-        return ResponseEntity.notFound().build();
-    }
-
-
+    return ResponseEntity.notFound().build();
+  }
 }

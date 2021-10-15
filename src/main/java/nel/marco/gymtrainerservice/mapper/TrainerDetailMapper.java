@@ -11,13 +11,12 @@ import org.mapstruct.factory.Mappers;
 @Mapper(uses = TrainerMapper.class, unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface TrainerDetailMapper {
 
-    TrainerDetailMapper INSTANCE = Mappers.getMapper(TrainerDetailMapper.class);
+  TrainerDetailMapper INSTANCE = Mappers.getMapper(TrainerDetailMapper.class);
 
-    @Mappings({
-            @Mapping(target = "trainer", ignore = true),
-            @Mapping(target = "inserted", ignore = true),
-            @Mapping(target = "updated", ignore = true),
-
-    })
-    TrainerDetail mapToV1(TrainerDto trainerDto);
+  @Mappings({
+    @Mapping(target = "trainer", ignore = true),
+    @Mapping(target = "inserted", ignore = true),
+    @Mapping(target = "updated", ignore = true),
+  })
+  TrainerDetail mapToV1(TrainerDto trainerDto);
 }

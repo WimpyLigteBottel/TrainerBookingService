@@ -15,39 +15,37 @@ import java.util.Optional;
 @RestController
 public class Gyms {
 
+  @Autowired private GymManager gymManager;
 
-    @Autowired
-    private GymManager gymManager;
+  @GetMapping("/gym")
+  public ResponseEntity<List<GymModel>> findAllGyms(
+      @RequestParam(required = false, defaultValue = "10") int maxResults,
+      @RequestParam(required = false, defaultValue = "0") int index,
+      @RequestParam(required = false, defaultValue = "") String filterGymName) {
+    List<GymDto> all = gymManager.findAll(maxResults, index, filterGymName);
 
+    return ResponseEntity.ok(GymMapper.INSTANCE.mapToV1(all));
+  }
 
-    @GetMapping("/gym")
-    public ResponseEntity<List<GymModel>> findAllGyms(@RequestParam(required = false, defaultValue = "10") int maxResults, @RequestParam(required = false, defaultValue = "0") int index, @RequestParam(required = false, defaultValue = "") String filterGymName) {
-        List<GymDto> all = gymManager.findAll(maxResults, index, filterGymName);
+  @PostMapping("/gym")
+  public ResponseEntity<?> createNewGym(@RequestBody GymModel gym) {
 
+    GymDto mapToV1 = GymMapper.INSTANCE.mapToV1(gym);
 
-        return ResponseEntity.ok(GymMapper.INSTANCE.mapToV1(all));
+    gymManager.create(mapToV1);
+
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @GetMapping("/gym/{id}")
+  public ResponseEntity<GymModel> findGym(@PathVariable long id) {
+
+    Optional<GymDto> gymDto = gymManager.find(id);
+
+    if (gymDto.isPresent()) {
+      return ResponseEntity.ok(GymMapper.INSTANCE.mapToV1(gymDto.get()));
     }
 
-    @PostMapping("/gym")
-    public ResponseEntity<?> createNewGym(@RequestBody GymModel gym) {
-
-        GymDto mapToV1 = GymMapper.INSTANCE.mapToV1(gym);
-
-        gymManager.create(mapToV1);
-
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @GetMapping("/gym/{id}")
-    public ResponseEntity<GymModel> findGym(@PathVariable long id) {
-
-        Optional<GymDto> gymDto = gymManager.find(id);
-
-        if (gymDto.isPresent()) {
-            return ResponseEntity.ok(GymMapper.INSTANCE.mapToV1(gymDto.get()));
-        }
-
-        return ResponseEntity.notFound().build();
-    }
+    return ResponseEntity.notFound().build();
+  }
 }
